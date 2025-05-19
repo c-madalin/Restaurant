@@ -23,9 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Services\" />
-    <Folder Include="VIews\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>
