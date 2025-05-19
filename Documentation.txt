@@ -1,0 +1,198 @@
+# Documentație proiect MVP - Tema 3 Restaurant
+
+## 1. Inițializare proiect
+
+- Am creat repository-ul pe GitHub și am făcut commitul inițial.
+- Am adăugat pachetele NuGet pentru a folosi PostgreSQL (`Npgsql`).
+- Pentru conexiunea cu baza de date locală folosim `appsettings.json`.
+
+---
+
+## 2. Baza de date
+
+### Tabele principale
+
+```sql
+-- Categorii
+CREATE TABLE categories (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+
+-- Preparate (dishes)
+CREATE TABLE dishes (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    price NUMERIC(10, 2) NOT NULL,
+    portion_quantity INTEGER NOT NULL, -- grame per porție
+    total_quantity INTEGER NOT NULL,   -- grame disponibile
+    category_id INTEGER REFERENCES categories(id),
+    image_urls TEXT[],
+    description TEXT
+);
+
+-- Alergeni
+CREATE TABLE allergens (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL
+);
+
+-- Legătură preparate-alergeni
+CREATE TABLE dish_allergens (
+    dish_id INTEGER REFERENCES dishes(id) ON DELETE CASCADE,
+    allergen_id INTEGER REFERENCES allergens(id) ON DELETE CASCADE,
+    PRIMARY KEY (dish_id, allergen_id)
+);
+
+-- Meniuri
+CREATE TABLE menus (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    category_id INTEGER REFERENCES categories(id)
+);
+
+-- Legătură meniuri-preparate (cu gramaj personalizat)
+CREATE TABLE menu_items (
+    menu_id INTEGER REFERENCES menus(id) ON DELETE CASCADE,
+    dish_id INTEGER REFERENCES dishes(id) ON DELETE CASCADE,
+    quantity INTEGER NOT NULL,
+    PRIMARY KEY (menu_id, dish_id)
+);
+
+-- Utilizatori
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    phone VARCHAR(20),
+    delivery_address TEXT,
+    role VARCHAR(20) CHECK (role IN ('client', 'employee')) DEFAULT 'client'
+);
+
+-- Comenzi
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT NOW(),
+    status VARCHAR(30) CHECK (status IN ('inregistrata', 'se pregateste', 'a plecat', 'livrata', 'anulata')) DEFAULT 'inregistrata',
+    delivery_time_estimated TIMESTAMP,
+    transport_cost NUMERIC(10,2) DEFAULT 0,
+    discount_applied NUMERIC(10,2) DEFAULT 0,
+    total_value NUMERIC(10,2)
+);
+
+-- Produse din comandă
+CREATE TABLE order_items (
+    order_id INTEGER REFERENCES orders(id) ON DELETE CASCADE,
+    dish_id INTEGER REFERENCES dishes(id),
+    quantity INTEGER NOT NULL,
+    PRIMARY KEY (order_id, dish_id)
+);
+```
+
+### Funcții PL/pgSQL
+
+```sql
+-- Adăugare comandă
+CREATE OR REPLACE FUNCTION AddOrder(
+    p_user_id INT,
+    p_items JSONB
+)
+RETURNS VOID AS $$
+DECLARE
+    v_order_id INT;
+    item JSONB;
+BEGIN
+    INSERT INTO orders (user_id) VALUES (p_user_id) RETURNING id INTO v_order_id;
+
+    FOR item IN SELECT * FROM jsonb_array_elements(p_items)
+    LOOP
+        INSERT INTO order_items(order_id, dish_id, quantity)
+        VALUES (v_order_id, item->>'dish_id', (item->>'quantity')::INT);
+
+        -- Update stoc preparat
+        UPDATE dishes
+        SET total_quantity = total_quantity - (portion_quantity * (item->>'quantity')::INT)
+        WHERE id = (item->>'dish_id')::INT;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Preparate cu stoc scăzut
+CREATE OR REPLACE FUNCTION GetLowStockDishes(p_threshold INT)
+RETURNS TABLE(name TEXT, total_quantity INT) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT name, total_quantity
+    FROM dishes
+    WHERE total_quantity <= p_threshold;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Comenzile unui client
+CREATE OR REPLACE FUNCTION GetClientOrders(p_user_id INT)
+RETURNS TABLE(order_id INT, created_at TIMESTAMP, status TEXT, total_value NUMERIC) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT id, created_at, status, total_value
+    FROM orders
+    WHERE user_id = p_user_id
+    ORDER BY created_at DESC;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Aplicare discount la comandă
+CREATE OR REPLACE FUNCTION ApplyDiscount(p_order_id INT, p_discount NUMERIC)
+RETURNS VOID AS $$
+BEGIN
+    UPDATE orders
+    SET discount_applied = p_discount,
+        total_value = total_value - p_discount
+    WHERE id = p_order_id;
+END;
+$$ LANGUAGE plpgsql;
+```
+
+---
+
+## 3. Testare conexiune bază de date din aplicație (WPF example)
+
+După ce am făcut conexiunea la baza de date, trebuie să verificăm dacă funcționează corect. O modalitate rapidă în WPF este să facem un query simplu, de exemplu să selectăm din tabela `users`.
+
+### Exemplu cod C# (WPF, folosind Npgsql)
+
+```csharp
+using Npgsql;
+
+// Într-un buton sau la pornire aplicație:
+string connectionString = "Host=localhost;Port=5432;Username=postgres;Password=parola;Database=restaurant_db";
+using (var conn = new NpgsqlConnection(connectionString))
+{
+    conn.Open();
+    string sql = "SELECT id, first_name, last_name FROM users LIMIT 1";
+    using (var cmd = new NpgsqlCommand(sql, conn))
+    using (var reader = cmd.ExecuteReader())
+    {
+        if (reader.Read())
+        {
+            MessageBox.Show($"Conexiune OK! Primul user: {reader["first_name"]} {reader["last_name"]}");
+        }
+        else
+        {
+            MessageBox.Show("Conexiune OK, dar nu există utilizatori.");
+        }
+    }
+}
+```
+
+---
+
+## 4. Alte mențiuni
+
+- După ce am testat conexiunea cu baza de date, putem avansa la implementarea funcționalităților aplicației.
+- Structura tabelelor permite extinderea ușoară (ex: adăugare produse noi, meniuri, etc).
+- Pentru managementul parolelor folosiți hashing (nu stocați parolele ca text simplu).
+
+---
