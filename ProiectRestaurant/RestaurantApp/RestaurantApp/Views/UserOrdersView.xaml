@@ -5,85 +5,157 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800"
-             Background="#1E1E1E">
+             Background="#0D1117">
 
-    <Grid Background="#1E1E1E">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <DockPanel Grid.Row="0" Margin="10">
-            <Button DockPanel.Dock="Right" Content="Refresh" Command="{Binding RefreshCommand}" Margin="0,0,0,0" />
-            <TextBlock Text="My Orders" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="White"/>
-        </DockPanel>
+        <!-- Enhanced Header -->
+        <Border Grid.Row="0" Background="#161B22" Padding="20" BorderBrush="#30363D" BorderThickness="0,0,0,1">
+            <DockPanel>
+                <Button DockPanel.Dock="Right" Content="Refresh" Command="{Binding RefreshCommand}" 
+                       Padding="12,8" Background="#238636" Foreground="White" 
+                       BorderThickness="0" FontWeight="SemiBold">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="6"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <StackPanel>
+                    <TextBlock Text="MY ORDERS" FontSize="22" FontWeight="Bold" Foreground="#58A6FF" 
+                             VerticalAlignment="Center" FontFamily="Segoe UI"/>
+                    <TextBlock Text="Track and manage your order history" 
+                             Foreground="#8B949E" Margin="0,5,0,0" FontSize="13"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
 
-        <!-- Orders List -->
-        <ListView Grid.Row="1" ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrder}" Margin="10"
-                  Background="#252526" Foreground="White" BorderBrush="#333333" BorderThickness="1">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Order ID" DisplayMemberBinding="{Binding OrderId}" Width="70"/>
-                    <GridViewColumn Header="Date" DisplayMemberBinding="{Binding OrderDate, StringFormat='{}{0:g}'}" Width="150"/>
-                    <GridViewColumn Header="Total" DisplayMemberBinding="{Binding TotalAmount, StringFormat='{}{0:C}'}" Width="80"/>
-                    <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}" Width="100"/>
-                    <GridViewColumn Header="Est. Delivery" DisplayMemberBinding="{Binding EstimatedDeliveryTime, StringFormat='{}{0:g}'}" Width="150"/>
-                    <GridViewColumn Header="Actions" Width="100">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Content="Cancel" 
-                                        Command="{Binding DataContext.CancelOrderCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
-                                        CommandParameter="{Binding}"
-                                        Visibility="{Binding Status, Converter={StaticResource StringToOrderStatusConverter}}"
-                                        Background="#3A3A3A" Foreground="White" BorderBrush="#555555" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <!-- Order Cards -->
+        <ScrollViewer Grid.Row="1" Margin="15" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Orders}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,0,0,15" Background="#161B22" CornerRadius="8" 
+                                BorderBrush="#30363D" BorderThickness="1">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
 
-        <!-- Order Details -->
-        <Expander Grid.Row="2" Header="Order Details" Margin="10" IsExpanded="True" Background="#252526" Foreground="White" BorderBrush="#333333" BorderThickness="1">
-            <Grid Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+                                <!-- Order Header -->
+                                <Grid Grid.Row="0" Margin="15">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
 
-                <!-- Message -->
-                <TextBlock Grid.Row="0" Text="{Binding Message}" 
-                           Foreground="#90EE90" Margin="0,0,0,10"
-                           Visibility="{Binding Message, Converter={StaticResource StringToVisibilityConverter}}"/>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="{Binding OrderId, StringFormat='Order #{0}'}" 
+                                                 FontWeight="Bold" FontSize="16" Foreground="White"/>
+                                        <TextBlock Text="{Binding OrderDate, StringFormat='{}{0:MMMM dd, yyyy HH:mm}'}" 
+                                                 Foreground="#8B949E" Margin="0,5,0,0"/>
+                                    </StackPanel>
 
-                <!-- Order Items -->
-                <ListView Grid.Row="1" ItemsSource="{Binding SelectedOrder.OrderItems}" MaxHeight="200"
-                          Background="#252526" Foreground="White" BorderBrush="#333333" BorderThickness="1">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Product" DisplayMemberBinding="{Binding ProductName}" Width="200"/>
-                            <GridViewColumn Header="Unit Price" DisplayMemberBinding="{Binding UnitPrice, StringFormat='{}{0:C}'}" Width="100"/>
-                            <GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Quantity}" Width="70"/>
-                            <GridViewColumn Header="Total" Width="100">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock>
-                                            <TextBlock.Text>
-                                                <MultiBinding Converter="{StaticResource OrderItemTotalMultiConverter}">
-                                                    <Binding Path="Quantity" />
-                                                    <Binding Path="UnitPrice" />
-                                                </MultiBinding>
-                                            </TextBlock.Text>
-                                        </TextBlock>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </Grid>
-        </Expander>
+                                    <Border Grid.Column="1" Background="#21262D" CornerRadius="15" 
+                                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Padding="12,6" Margin="10,0">
+                                        <TextBlock Text="{Binding Status}" Foreground="#58A6FF" 
+                                                 FontWeight="SemiBold" FontSize="13"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="2" HorizontalAlignment="Right">
+                                        <TextBlock Text="Total:" Foreground="#8B949E" HorizontalAlignment="Right"/>
+                                        <TextBlock Text="{Binding TotalAmount, StringFormat='{}{0:C}'}" 
+                                                 FontWeight="Bold" FontSize="18" Foreground="#7CE38B"
+                                                 HorizontalAlignment="Right"/>
+                                        <Button Content="Cancel Order" Margin="0,10,0,0" Padding="12,6"
+                                                Command="{Binding DataContext.CancelOrderCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                CommandParameter="{Binding}"
+                                                Visibility="{Binding Status, Converter={StaticResource StringToOrderStatusConverter}}"
+                                                Background="#F85149" Foreground="White" BorderThickness="0"
+                                                FontWeight="SemiBold">
+                                            <Button.Resources>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="CornerRadius" Value="6"/>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- Divider -->
+                                <Border Grid.Row="1" BorderBrush="#30363D" BorderThickness="0,1,0,0">
+                                    <Expander Header="Order Details" Foreground="#C9D1D9" Padding="15"
+                                            Background="Transparent" BorderThickness="0">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <!-- Estimated Delivery -->
+                                            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                                                <TextBlock Text="Estimated Delivery: " Foreground="#8B949E"/>
+                                                <TextBlock Text="{Binding EstimatedDeliveryTime, StringFormat='{}{0:g}'}" 
+                                                         Foreground="#C9D1D9" FontWeight="SemiBold"/>
+                                            </StackPanel>
+
+                                            <!-- Order Items -->
+                                            <Border Grid.Row="1" BorderBrush="#30363D" BorderThickness="1" 
+                                                   CornerRadius="6" Background="#10151C">
+                                                <ListView ItemsSource="{Binding OrderItems}" MaxHeight="200"
+                                                        Background="Transparent" BorderThickness="0"
+                                                        Foreground="#C9D1D9">
+                                                    <ListView.View>
+                                                        <GridView>
+                                                            <GridViewColumn Header="Product" DisplayMemberBinding="{Binding ProductName}" Width="200"/>
+                                                            <GridViewColumn Header="Unit Price" DisplayMemberBinding="{Binding UnitPrice, StringFormat='{}{0:C}'}" Width="100"/>
+                                                            <GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Quantity}" Width="70"/>
+                                                            <GridViewColumn Header="Total" Width="100">
+                                                                <GridViewColumn.CellTemplate>
+                                                                    <DataTemplate>
+                                                                        <TextBlock Foreground="#7CE38B" FontWeight="SemiBold">
+                                                                            <TextBlock.Text>
+                                                                                <MultiBinding Converter="{StaticResource OrderItemTotalMultiConverter}">
+                                                                                    <Binding Path="Quantity" />
+                                                                                    <Binding Path="UnitPrice" />
+                                                                                </MultiBinding>
+                                                                            </TextBlock.Text>
+                                                                        </TextBlock>
+                                                                    </DataTemplate>
+                                                                </GridViewColumn.CellTemplate>
+                                                            </GridViewColumn>
+                                                        </GridView>
+                                                    </ListView.View>
+                                                </ListView>
+                                            </Border>
+
+                                            <!-- Message -->
+                                            <TextBlock Grid.Row="2" Text="{Binding DataContext.Message, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+                                                     Foreground="#7CE38B" Margin="0,10,0,0" FontWeight="SemiBold"
+                                                     Visibility="{Binding DataContext.Message, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource StringToVisibilityConverter}}"/>
+                                        </Grid>
+                                    </Expander>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Message display when no order selected -->
+        <TextBlock Grid.Row="2" Text="{Binding Message}" 
+                   Foreground="#7CE38B" Margin="15,5"
+                   FontWeight="SemiBold"
+                   Visibility="{Binding Message, Converter={StaticResource StringToVisibilityConverter}}"/>
     </Grid>
 </UserControl>
