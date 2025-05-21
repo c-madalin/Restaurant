@@ -10,14 +10,20 @@
         x:Name="window"
         Background="#121212">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <!-- Left menu panel width -->
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <!-- User info panel -->
             <RowDefinition Height="*"/>
+            <!-- Main content -->
         </Grid.RowDefinitions>
 
-        <!-- User Info Panel -->
-        <DockPanel Grid.Row="0" Background="#1E1E1E">
+        <!-- User Info Panel - spans across the entire top -->
+        <DockPanel Grid.Row="0" Grid.ColumnSpan="2" Background="#1E1E1E">
             <Button x:Name="btnLogin" Content="Login" Click="LoginButton_Click" 
                     DockPanel.Dock="Right" Margin="5" Padding="10,5" 
                     Background="#2D2D30" Foreground="White" BorderBrush="#444"/>
@@ -39,31 +45,39 @@
                        Margin="10,0,0,0" FontSize="14"/>
         </DockPanel>
 
-        <!-- Navigation Panel -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Background="#252526">
-            <Button Content="Menu" Margin="5" Padding="10,5" Click="MenuButton_Click"
-                    Background="#3C3C3C" Foreground="White" BorderBrush="#444"/>
-            <Button Content="Search" Margin="5" Padding="10,5" Click="SearchButton_Click"
-                    Background="#3C3C3C" Foreground="White" BorderBrush="#444"/>
-            <Button x:Name="btnOrders" Content="My Orders" Margin="5" Padding="10,5" 
+        <!-- Vertical Navigation Panel - left side -->
+        <StackPanel Grid.Row="1" Grid.Column="0" Background="#252526" Orientation="Vertical">
+            <Button Content="Menu" Margin="10" Padding="10,8" Click="MenuButton_Click"
+                    Background="#3C3C3C" Foreground="White" BorderBrush="#444"
+                    HorizontalAlignment="Stretch"/>
+            <Button Content="Search" Margin="10" Padding="10,8" Click="SearchButton_Click"
+                    Background="#3C3C3C" Foreground="White" BorderBrush="#444"
+                    HorizontalAlignment="Stretch"/>
+            <Button x:Name="btnOrders" Content="My Orders" Margin="10" Padding="10,8" 
                     Click="OrdersButton_Click" Visibility="Collapsed"
-                    Background="#3C3C3C" Foreground="White" BorderBrush="#444"/>
+                    Background="#3C3C3C" Foreground="White" BorderBrush="#444"
+                    HorizontalAlignment="Stretch"/>
 
-            <!-- Admin Panel -->
-            <StackPanel x:Name="adminPanel" Orientation="Horizontal" Visibility="Collapsed">
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="5,0"/>
-                <Button Content="Categories" Margin="5" Padding="10,5" Click="CategoriesButton_Click"
-                        Background="#3C3C3C" Foreground="White" BorderBrush="#444"/>
-                <Button Content="Products" Margin="5" Padding="10,5" Click="ProductsButton_Click"
-                        Background="#3C3C3C" Foreground="White" BorderBrush="#444"/>
-                <Button Content="All Orders" Margin="5" Padding="10,5" Click="AllOrdersButton_Click"
-                        Background="#3C3C3C" Foreground="White" BorderBrush="#444"/>
-                <Button Content="Stock Alert" Margin="5" Padding="10,5" Click="StockAlertButton_Click"
-                        Background="#3C3C3C" Foreground="White" BorderBrush="#444"/>
+            <!-- Admin Panel - now vertical -->
+            <Separator Margin="10" Background="#444" Visibility="{Binding ElementName=adminPanel, Path=Visibility}"/>
+            <StackPanel x:Name="adminPanel" Orientation="Vertical" Visibility="Collapsed">
+                <TextBlock Text="ADMIN" Foreground="#999" Margin="10,0,0,5" FontSize="12"/>
+                <Button Content="Categories" Margin="10,5" Padding="10,8" Click="CategoriesButton_Click"
+                        Background="#3C3C3C" Foreground="White" BorderBrush="#444"
+                        HorizontalAlignment="Stretch"/>
+                <Button Content="Products" Margin="10,5" Padding="10,8" Click="ProductsButton_Click"
+                        Background="#3C3C3C" Foreground="White" BorderBrush="#444"
+                        HorizontalAlignment="Stretch"/>
+                <Button Content="All Orders" Margin="10,5" Padding="10,8" Click="AllOrdersButton_Click"
+                        Background="#3C3C3C" Foreground="White" BorderBrush="#444"
+                        HorizontalAlignment="Stretch"/>
+                <Button Content="Stock Alert" Margin="10,5" Padding="10,8" Click="StockAlertButton_Click"
+                        Background="#3C3C3C" Foreground="White" BorderBrush="#444"
+                        HorizontalAlignment="Stretch"/>
             </StackPanel>
         </StackPanel>
 
-        <!-- Main Content -->
-        <ContentControl Grid.Row="2" x:Name="MainContent" Background="#1E1E1E"/>
+        <!-- Main Content - to the right of the menu -->
+        <ContentControl Grid.Row="1" Grid.Column="1" x:Name="MainContent" Background="#1E1E1E"/>
     </Grid>
 </Window>
