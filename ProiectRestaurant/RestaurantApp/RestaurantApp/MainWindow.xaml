@@ -1,0 +1,69 @@
+﻿<Window x:Class="RestaurantApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:RestaurantApp.Views"
+        xmlns:local="clr-namespace:RestaurantApp"
+        mc:Ignorable="d"
+        Title="Restaurant App" Height="600" Width="900"
+        x:Name="window"
+        Background="#121212">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- User Info Panel -->
+        <DockPanel Grid.Row="0" Background="#1E1E1E">
+            <Button x:Name="btnLogin" Content="Login" Click="LoginButton_Click" 
+                    DockPanel.Dock="Right" Margin="5" Padding="10,5" 
+                    Background="#2D2D30" Foreground="White" BorderBrush="#444"/>
+            <Button x:Name="btnLogout" Content="Logout" Click="LogoutButton_Click" 
+                    DockPanel.Dock="Right" Margin="5" Padding="10,5" Visibility="Collapsed" 
+                    Background="#2D2D30" Foreground="White" BorderBrush="#444"/>
+            <Button x:Name="btnCart" DockPanel.Dock="Right" Click="CartButton_Click" 
+                    Margin="5" Padding="10,5" Background="#2D2D30" Foreground="White" BorderBrush="#444">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="🛒" FontSize="14" VerticalAlignment="Center"/>
+                    <TextBlock Text="Cart" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                    <Border Background="#4CAF50" CornerRadius="10" Margin="5,0,0,0" 
+                            Visibility="{Binding ShoppingCartItemCount, Converter={StaticResource IntToVisibilityConverter}}">
+                        <TextBlock Text="{Binding ShoppingCartItemCount}" Foreground="White" Margin="5,0" FontSize="10"/>
+                    </Border>
+                </StackPanel>
+            </Button>
+            <TextBlock x:Name="userInfoText" Foreground="White" VerticalAlignment="Center" 
+                       Margin="10,0,0,0" FontSize="14"/>
+        </DockPanel>
+
+        <!-- Navigation Panel -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Background="#252526">
+            <Button Content="Menu" Margin="5" Padding="10,5" Click="MenuButton_Click"
+                    Background="#3C3C3C" Foreground="White" BorderBrush="#444"/>
+            <Button Content="Search" Margin="5" Padding="10,5" Click="SearchButton_Click"
+                    Background="#3C3C3C" Foreground="White" BorderBrush="#444"/>
+            <Button x:Name="btnOrders" Content="My Orders" Margin="5" Padding="10,5" 
+                    Click="OrdersButton_Click" Visibility="Collapsed"
+                    Background="#3C3C3C" Foreground="White" BorderBrush="#444"/>
+
+            <!-- Admin Panel -->
+            <StackPanel x:Name="adminPanel" Orientation="Horizontal" Visibility="Collapsed">
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="5,0"/>
+                <Button Content="Categories" Margin="5" Padding="10,5" Click="CategoriesButton_Click"
+                        Background="#3C3C3C" Foreground="White" BorderBrush="#444"/>
+                <Button Content="Products" Margin="5" Padding="10,5" Click="ProductsButton_Click"
+                        Background="#3C3C3C" Foreground="White" BorderBrush="#444"/>
+                <Button Content="All Orders" Margin="5" Padding="10,5" Click="AllOrdersButton_Click"
+                        Background="#3C3C3C" Foreground="White" BorderBrush="#444"/>
+                <Button Content="Stock Alert" Margin="5" Padding="10,5" Click="StockAlertButton_Click"
+                        Background="#3C3C3C" Foreground="White" BorderBrush="#444"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Main Content -->
+        <ContentControl Grid.Row="2" x:Name="MainContent" Background="#1E1E1E"/>
+    </Grid>
+</Window>
