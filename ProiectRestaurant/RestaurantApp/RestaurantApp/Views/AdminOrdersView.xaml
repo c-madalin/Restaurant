@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800"
-             Background="#121212">
+             Background="#0D1117">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -13,17 +13,16 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <DockPanel Grid.Row="0" Margin="10">
-            <Button DockPanel.Dock="Right" Content="Refresh" Command="{Binding RefreshCommand}" Padding="10,5"
-                    Background="#3C3C3C" Foreground="White" BorderBrush="#444"/>
-            <CheckBox DockPanel.Dock="Right" Content="Active Orders Only" IsChecked="{Binding ActiveOrdersOnly}" 
-                      VerticalAlignment="Center" Margin="0,0,20,0" Foreground="White"/>
-            <TextBlock Text="All Orders" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="White"/>
+        <!-- Header -->
+        <DockPanel Grid.Row="0" Background="#161B22" Margin="0,0,0,10">
+            <Button DockPanel.Dock="Right" Content="Refresh" Command="{Binding RefreshCommand}" Background="#21262D" Foreground="White" Margin="10,5"/>
+            <CheckBox DockPanel.Dock="Right" Content="Active Orders Only" IsChecked="{Binding ActiveOrdersOnly}" VerticalAlignment="Center" Margin="0,5,10,5" Foreground="White"/>
+            <TextBlock Text="All Orders" FontSize="22" FontWeight="Bold" Foreground="#58A6FF" VerticalAlignment="Center" Margin="10,5"/>
         </DockPanel>
 
         <!-- Orders List -->
         <ListView Grid.Row="1" ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrder}" Margin="10"
-                  Background="#1E1E1E" Foreground="White" BorderBrush="#333">
+                  Background="#161B22" Foreground="White">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Order ID" DisplayMemberBinding="{Binding OrderId}" Width="70"/>
@@ -35,23 +34,19 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Content="Preparing" Margin="2" Padding="5,2"
-                                            Background="#3C3C3C" Foreground="White" BorderBrush="#444"
+                                    <Button Content="Preparing" Margin="2" Background="#21262D" Foreground="White"
                                             Command="{Binding DataContext.ChangeStatusCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                                             CommandParameter="Preparing"
                                             Visibility="{Binding Status, Converter={StaticResource OrderStatusToVisibilityConverter}, ConverterParameter=Registered}"/>
-                                    <Button Content="Dispatched" Margin="2" Padding="5,2"
-                                            Background="#3C3C3C" Foreground="White" BorderBrush="#444"
+                                    <Button Content="Dispatched" Margin="2" Background="#21262D" Foreground="White"
                                             Command="{Binding DataContext.ChangeStatusCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                                             CommandParameter="Dispatched"
                                             Visibility="{Binding Status, Converter={StaticResource OrderStatusToVisibilityConverter}, ConverterParameter=Preparing}"/>
-                                    <Button Content="Delivered" Margin="2" Padding="5,2"
-                                            Background="#3C3C3C" Foreground="White" BorderBrush="#444"
+                                    <Button Content="Delivered" Margin="2" Background="#21262D" Foreground="White"
                                             Command="{Binding DataContext.ChangeStatusCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                                             CommandParameter="Delivered"
                                             Visibility="{Binding Status, Converter={StaticResource OrderStatusToVisibilityConverter}, ConverterParameter=Dispatched}"/>
-                                    <Button Content="Cancel" Margin="2" Padding="5,2"
-                                            Background="#B00020" Foreground="White" BorderBrush="#444"
+                                    <Button Content="Cancel" Margin="2" Background="#B00020" Foreground="White"
                                             Command="{Binding DataContext.ChangeStatusCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                                             CommandParameter="Cancelled"
                                             Visibility="{Binding Status, Converter={StaticResource OrderStatusToVisibilityConverter}, ConverterParameter=Active}"/>
@@ -63,7 +58,8 @@
             </ListView.View>
         </ListView>
 
-        <Expander Grid.Row="2" Header="Order Details" Margin="10" IsExpanded="True" Background="#1E1E1E" Foreground="White">
+        <!-- Order Details -->
+        <Expander Grid.Row="2" Header="Order Details" Margin="10" IsExpanded="True" Background="#161B22" Foreground="White">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -71,8 +67,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Text="{Binding Message}" 
-                           Foreground="LightGreen" Margin="0,0,0,10"
+                <TextBlock Grid.Row="0" Text="{Binding Message}" Foreground="#7CE38B" Margin="0,0,0,10"
                            Visibility="{Binding Message, Converter={StaticResource StringToVisibilityConverter}}"/>
 
                 <Grid Grid.Row="1" Margin="0,0,0,10">
@@ -97,8 +92,7 @@
                     <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding SelectedOrder.DeliveryAddress}" TextWrapping="Wrap" Foreground="White"/>
                 </Grid>
 
-                <!-- Order Items -->
-                <ListView Grid.Row="2" ItemsSource="{Binding SelectedOrder.OrderItems}" MaxHeight="200" Background="#1E1E1E" Foreground="White" BorderBrush="#333">
+                <ListView Grid.Row="2" ItemsSource="{Binding SelectedOrder.OrderItems}" MaxHeight="200" Background="#161B22" Foreground="White">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Product" DisplayMemberBinding="{Binding ProductName}" Width="200"/>

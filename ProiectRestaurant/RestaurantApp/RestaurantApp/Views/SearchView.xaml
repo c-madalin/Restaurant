@@ -5,16 +5,29 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800"
-             Background="#121212">
+             Background="#0D1117">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <!-- Header -->
             <RowDefinition Height="Auto"/>
+            <!-- Search Controls -->
+            <RowDefinition Height="*"/>
+            <!-- Results -->
+            <RowDefinition Height="Auto"/>
+            <!-- Message -->
         </Grid.RowDefinitions>
 
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#161B22" Padding="15" BorderBrush="#30363D" BorderThickness="0,0,0,1">
+            <StackPanel>
+                <TextBlock Text="SEARCH MENU" FontSize="22" FontWeight="Bold" Foreground="#58A6FF" FontFamily="Segoe UI"/>
+                <TextBlock Text="Find dishes by name or allergens" Foreground="#8B949E" Margin="0,5,0,0" FontSize="13"/>
+            </StackPanel>
+        </Border>
+
         <!-- Search Controls -->
-        <Border Grid.Row="0" BorderBrush="#333" BorderThickness="0,0,0,1" Padding="10" Background="#1E1E1E">
+        <Border Grid.Row="1" Padding="10" Background="#161B22" BorderBrush="#30363D" BorderThickness="0,0,0,1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -24,35 +37,27 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBox Grid.Column="0" Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}" 
-                         Padding="5" Margin="0,0,10,0" 
+                         Padding="8" Margin="0,0,10,0"
                          VerticalContentAlignment="Center"
-                         Background="#333" Foreground="White" BorderBrush="#555"/>
+                         Background="#21262D" Foreground="White" BorderBrush="#30363D" BorderThickness="1"/>
 
-                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
-                    <RadioButton Content="Search by Name" IsChecked="{Binding SearchForAllergen, Converter={StaticResource InverseBooleanConverter}}" 
-                                 VerticalContentAlignment="Center" Margin="0,0,5,0"
-                                 Foreground="White"/>
-                    <RadioButton Content="Search by Allergen" IsChecked="{Binding SearchForAllergen}" 
-                                 VerticalContentAlignment="Center"
-                                 Foreground="White"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0" VerticalAlignment="Center">
+                    <RadioButton Content="By Name" IsChecked="{Binding SearchForAllergen, Converter={StaticResource InverseBooleanConverter}}"
+                                 Margin="0,0,5,0" Foreground="#C9D1D9"/>
+                    <RadioButton Content="By Allergen" IsChecked="{Binding SearchForAllergen}" Foreground="#C9D1D9"/>
                 </StackPanel>
 
-                <CheckBox Grid.Column="2" Content="Invert Search (NOT)" IsChecked="{Binding InvertSearch}" 
-                          VerticalContentAlignment="Center" Margin="0,0,10,0"
-                          Foreground="White"/>
+                <CheckBox Grid.Column="2" Content="Invert (NOT)" IsChecked="{Binding InvertSearch}" 
+                          Margin="0,0,10,0" Foreground="#C9D1D9" VerticalAlignment="Center"/>
 
-                <Button Grid.Column="3" Content="Search" Command="{Binding SearchCommand}" 
-                        Padding="15,5" Background="#4CAF50" Foreground="White" BorderBrush="#388E3C"/>
+                <Button Grid.Column="3" Content="SEARCH" Command="{Binding SearchCommand}" 
+                        Padding="10,5" Background="#238636" Foreground="White" BorderThickness="0" FontWeight="SemiBold"/>
             </Grid>
         </Border>
 
-        <!-- Message -->
-        <TextBlock Grid.Row="2" Text="{Binding Message}" 
-                   Foreground="#90EE90" Margin="10"
-                   Visibility="{Binding Message, Converter={StaticResource StringToVisibilityConverter}}"/>
-
         <!-- Search Results -->
-        <ListView Grid.Row="1" ItemsSource="{Binding SearchResults}" Margin="10" Background="#1E1E1E" Foreground="White">
+        <ListView Grid.Row="2" ItemsSource="{Binding SearchResults}" Margin="10" Background="#161B22" Foreground="White"
+                  BorderBrush="#30363D" BorderThickness="1">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Category" DisplayMemberBinding="{Binding CategoryName}" Width="100"/>
@@ -77,8 +82,8 @@
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Background="#773333" Margin="2" Padding="2" CornerRadius="3">
-                                                <TextBlock Text="{Binding Name}" FontSize="10" Foreground="White"/>
+                                            <Border Background="#21262D" Margin="2" Padding="2">
+                                                <TextBlock Text="{Binding Name}" FontSize="11" Foreground="#C9D1D9"/>
                                             </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -93,12 +98,18 @@
                                         Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                                         CommandParameter="{Binding}"
                                         Visibility="{Binding IsAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
-                                        Background="#4CAF50" Foreground="White" BorderBrush="#388E3C"/>
+                                        Background="#238636" Foreground="White" BorderThickness="0" Padding="4,2"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
+
+        <!-- Message -->
+        <TextBlock Grid.Row="3" Text="{Binding Message}" 
+                   Foreground="#7CE38B" Margin="10"
+                   FontWeight="SemiBold"
+                   Visibility="{Binding Message, Converter={StaticResource StringToVisibilityConverter}}"/>
     </Grid>
 </UserControl>

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800"
-             Background="#121212">
+             Background="#0D1117">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -14,27 +14,28 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <DockPanel Grid.Row="0" Margin="10">
-            <Button DockPanel.Dock="Right" Content="Refresh" Command="{Binding RefreshCommand}" Padding="10,5"
-                    Background="#333" Foreground="White" BorderBrush="#555" BorderThickness="1"/>
-            <TextBlock Text="Manage Categories" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="White"/>
+        <DockPanel Grid.Row="0" Background="#161B22" Margin="0,0,0,10">
+            <Button DockPanel.Dock="Right" Content="Refresh" Command="{Binding RefreshCommand}"
+                    Background="#21262D" Foreground="White" Margin="10,5"/>
+            <TextBlock Text="Manage Categories" FontSize="22" FontWeight="Bold" Foreground="#58A6FF"
+                       VerticalAlignment="Center" Margin="10,5"/>
         </DockPanel>
 
         <!-- Categories List -->
-        <ListView Grid.Row="1" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" Margin="10"
-                  Background="#1E1E1E" Foreground="White" BorderBrush="#333" BorderThickness="1">
+        <ListView Grid.Row="1" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}"
+                  Margin="10" Background="#161B22" Foreground="White">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="200"/>
                     <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}" Width="400"/>
-                    <GridViewColumn Header="Actions" Width="100">
+                    <GridViewColumn Header="Actions" Width="130">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <Button Content="Edit" Margin="0,0,5,0" Click="EditButton_Click" 
-                                            Background="#2196F3" Foreground="White" BorderBrush="#1769AA" BorderThickness="1" Padding="5,2"/>
+                                            Background="#2196F3" Foreground="White"/>
                                     <Button Content="Delete" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
-                                            Background="#B00020" Foreground="White" BorderBrush="#880000" BorderThickness="1" Padding="5,2"/>
+                                            Background="#B00020" Foreground="White"/>
                                 </StackPanel>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -47,14 +48,12 @@
                     <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="Foreground" Value="White"/>
                     <Setter Property="Margin" Value="0,2"/>
-                    <Setter Property="BorderBrush" Value="#333"/>
-                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#333"/>
+                            <Setter Property="Background" Value="#21262D"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#555"/>
+                            <Setter Property="Background" Value="#30363D"/>
                         </Trigger>
                     </Style.Triggers>
                 </Style>
@@ -62,50 +61,49 @@
         </ListView>
 
         <!-- Add/Edit Form -->
-        <Border Grid.Row="2" BorderBrush="#333" BorderThickness="0,1,0,0" Padding="10" Background="#1E1E1E">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+        <Grid Grid.Row="2" Background="#161B22" Margin="10,0,10,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                <!-- Message -->
-                <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding Message}" 
-                           Foreground="#4CAF50" Margin="0,0,0,10"
-                           Visibility="{Binding Message, Converter={StaticResource StringToVisibilityConverter}}"/>
+            <!-- Message -->
+            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding Message}" 
+                       Foreground="#7CE38B" Margin="0,0,0,10"
+                       Visibility="{Binding Message, Converter={StaticResource StringToVisibilityConverter}}"/>
 
-                <!-- Form Title -->
-                <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding IsEditing, Converter={StaticResource BoolToStringConverter}, ConverterParameter='Edit Category|Add New Category'}" 
-                           FontWeight="SemiBold" FontSize="16" Margin="0,0,0,10" Foreground="White"/>
+            <!-- Form Title -->
+            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" FontSize="16" FontWeight="Bold"
+                       Text="{Binding IsEditing, Converter={StaticResource BoolToStringConverter}, ConverterParameter='Edit Category|Add New Category'}"
+                       Foreground="#58A6FF" Margin="0,0,0,10"/>
 
-                <!-- Name -->
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Name:" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="White"/>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding NewCategory.Name, UpdateSourceTrigger=PropertyChanged}" Padding="5"
-                         Background="#333" Foreground="White" BorderBrush="#555" BorderThickness="1"/>
+            <!-- Name -->
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Name:" Foreground="White" Margin="0,0,10,0" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding NewCategory.Name, UpdateSourceTrigger=PropertyChanged}"
+                     Background="#21262D" Foreground="White" Margin="0,0,0,5"/>
 
-                <!-- Description -->
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="Description:" VerticalAlignment="Top" Margin="0,10,10,0" Foreground="White"/>
-                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding NewCategory.Description, UpdateSourceTrigger=PropertyChanged}" 
-                         TextWrapping="Wrap" AcceptsReturn="True" Height="60" Padding="5" Margin="0,10,0,0"
-                         Background="#333" Foreground="White" BorderBrush="#555" BorderThickness="1"/>
+            <!-- Description -->
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Description:" Foreground="White" Margin="0,5,10,0" VerticalAlignment="Top"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding NewCategory.Description, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" AcceptsReturn="True" Height="60"
+                     Background="#21262D" Foreground="White" Margin="0,5,0,0"/>
 
-                <!-- Buttons -->
-                <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                    <Button Content="Cancel" Command="{Binding CancelCommand}" Padding="10,5" Margin="0,0,10,0"
-                            Background="#555" Foreground="White" BorderBrush="#444" BorderThickness="1"/>
-                    <Button Content="Add" Command="{Binding AddCommand}" Padding="10,5" Background="#4CAF50" Foreground="White"
-                            Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Inverse}"/>
-                    <Button Content="Update" Command="{Binding UpdateCommand}" Padding="10,5" Background="#2196F3" Foreground="White"
-                            Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                </StackPanel>
-            </Grid>
-        </Border>
+            <!-- Buttons -->
+            <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="0,0,10,0"
+                        Background="#555" Foreground="White"/>
+                <Button Content="Add" Command="{Binding AddCommand}" Background="#238636" Foreground="White"
+                        Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Inverse}"/>
+                <Button Content="Update" Command="{Binding UpdateCommand}" Background="#2196F3" Foreground="White"
+                        Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

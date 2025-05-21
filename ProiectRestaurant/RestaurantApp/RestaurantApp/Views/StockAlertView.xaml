@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Background="#1E1E1E">
+             Background="#0D1117">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -13,18 +13,17 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header dark -->
-        <DockPanel Grid.Row="0" Background="#333333" Margin="10">
-            <Button DockPanel.Dock="Right" Content="Refresh" Command="{Binding RefreshCommand}" 
-                    Margin="0,5,0,5" 
-                    Background="#555555" Foreground="White" BorderBrush="#444444" />
-            <TextBlock Text="Low Stock Alert" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center" 
-                       Foreground="White" Margin="5,0,0,0"/>
+        <!-- Header -->
+        <DockPanel Grid.Row="0" Background="#161B22" Margin="0,0,0,10">
+            <Button DockPanel.Dock="Right" Content="Refresh" Command="{Binding RefreshCommand}"
+                    Background="#21262D" Foreground="White" Margin="10,5"/>
+            <TextBlock Text="Low Stock Alert" FontSize="22" FontWeight="Bold" Foreground="#58A6FF"
+                       VerticalAlignment="Center" Margin="10,5"/>
         </DockPanel>
 
         <!-- Low Stock Products ListView -->
         <ListView Grid.Row="1" ItemsSource="{Binding LowStockProducts}" Margin="10" 
-                  Background="#252525" Foreground="White" BorderBrush="#444444" BorderThickness="1">
+                  Background="#161B22" Foreground="White">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Category" DisplayMemberBinding="{Binding CategoryName}" Width="150"/>

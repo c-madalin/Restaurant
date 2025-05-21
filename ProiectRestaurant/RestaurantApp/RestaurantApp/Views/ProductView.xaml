@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Background="#121212">
+             Background="#0D1117">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -14,28 +14,20 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <DockPanel Grid.Row="0" Margin="10">
-            <Button DockPanel.Dock="Right" Content="Refresh" Command="{Binding RefreshCommand}" Padding="10,5"
-                    Background="#333" Foreground="White" BorderBrush="#444"/>
-            <TextBlock Text="Products" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="White"/>
+        <DockPanel Grid.Row="0" Background="#161B22" Margin="0,0,0,10">
+            <Button DockPanel.Dock="Right" Content="Refresh" Command="{Binding RefreshCommand}"
+                    Background="#21262D" Foreground="White" Margin="10,5"/>
+            <TextBlock Text="Products" FontSize="22" FontWeight="Bold" Foreground="#58A6FF"
+                       VerticalAlignment="Center" Margin="10,5"/>
         </DockPanel>
 
-        <!-- Message -->
-        <TextBlock Grid.Row="2" Text="{Binding Message}" 
-                   Foreground="#4CAF50" Margin="10"
-                   Visibility="{Binding Message, Converter={StaticResource StringToVisibilityConverter}}"/>
-
         <!-- Products List -->
-        <ListView Grid.Row="1" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" Margin="10"
-                  Background="#1E1E1E" Foreground="White"
-                  BorderBrush="#333" BorderThickness="1">
+        <ListView Grid.Row="1" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}"
+                  Margin="10" Background="#161B22" Foreground="White">
             <ListView.Resources>
-                <!-- Header style -->
                 <Style TargetType="GridViewColumnHeader">
-                    <Setter Property="Background" Value="#2C2C2C"/>
+                    <Setter Property="Background" Value="#21262D"/>
                     <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="BorderBrush" Value="#444"/>
-                    <Setter Property="BorderThickness" Value="0,0,1,1"/>
                 </Style>
             </ListView.Resources>
             <ListView.View>
@@ -63,7 +55,7 @@
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Background="#551111" Margin="2" Padding="2" CornerRadius="3">
+                                            <Border Background="#551111" Margin="2">
                                                 <TextBlock Text="{Binding Name}" FontSize="10" Foreground="#FF9999"/>
                                             </Border>
                                         </DataTemplate>
@@ -78,7 +70,7 @@
                                 <Button Content="Add to Cart" 
                                         Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                                         CommandParameter="{Binding}"
-                                        Background="#4CAF50" Foreground="White" Padding="5"
+                                        Background="#238636" Foreground="White" Margin="0,2,0,2"
                                         Visibility="{Binding IsAvailable, Converter={StaticResource BoolToVisibilityConverter}}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -86,5 +78,10 @@
                 </GridView>
             </ListView.View>
         </ListView>
+
+        <!-- Message -->
+        <TextBlock Grid.Row="2" Text="{Binding Message}" 
+                   Foreground="#7CE38B" Margin="10"
+                   Visibility="{Binding Message, Converter={StaticResource StringToVisibilityConverter}}"/>
     </Grid>
 </UserControl>

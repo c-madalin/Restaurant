@@ -5,46 +5,75 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800"
-             Background="#121212">
+             Background="#0D1117">
+
     <Grid>
-        <Border Width="500" Background="#1E1E1E" BorderBrush="#333" BorderThickness="1" 
-                CornerRadius="5" Padding="30" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="500">
-                <StackPanel>
-                    <TextBlock Text="Register" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="White"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Header -->
+            <RowDefinition Height="*"/>
+            <!-- Form -->
+        </Grid.RowDefinitions>
 
-                    <TextBlock Text="First Name:" Margin="0,10,0,5" Foreground="White"/>
-                    <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" Padding="5" Background="#333" Foreground="White" BorderBrush="#555"/>
-
-                    <TextBlock Text="Last Name:" Margin="0,10,0,5" Foreground="White"/>
-                    <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" Padding="5" Background="#333" Foreground="White" BorderBrush="#555"/>
-
-                    <TextBlock Text="Email:" Margin="0,10,0,5" Foreground="White"/>
-                    <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Padding="5" Background="#333" Foreground="White" BorderBrush="#555"/>
-
-                    <TextBlock Text="Password:" Margin="0,10,0,5" Foreground="White"/>
-                    <PasswordBox x:Name="PasswordBox" Padding="5" Background="#333" Foreground="White" BorderBrush="#555" PasswordChanged="PasswordBox_PasswordChanged"/>
-
-                    <TextBlock Text="Confirm Password:" Margin="0,10,0,5" Foreground="White"/>
-                    <PasswordBox x:Name="ConfirmPasswordBox" Padding="5" Background="#333" Foreground="White" BorderBrush="#555" PasswordChanged="ConfirmPasswordBox_PasswordChanged"/>
-
-                    <TextBlock Text="Phone Number:" Margin="0,10,0,5" Foreground="White"/>
-                    <TextBox Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}" Padding="5" Background="#333" Foreground="White" BorderBrush="#555"/>
-
-                    <TextBlock Text="Delivery Address:" Margin="0,10,0,5" Foreground="White"/>
-                    <TextBox Text="{Binding DeliveryAddress, UpdateSourceTrigger=PropertyChanged}" 
-                             TextWrapping="Wrap" AcceptsReturn="True" Height="60" Padding="5" Background="#333" Foreground="White" BorderBrush="#555"/>
-
-                    <TextBlock Text="{Binding ErrorMessage}" Foreground="#FF6666" Margin="0,10,0,0" 
-                               Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
-
-                    <Button Content="Register" Command="{Binding RegisterCommand}" Margin="0,20,0,0" Padding="10,5" Background="#4CAF50" Foreground="White" BorderBrush="#388E3C"/>
-
-                    <TextBlock Text="Already have an account?" HorizontalAlignment="Center" Margin="0,20,0,5" Foreground="White"/>
-                    <Button Content="Login" Command="{Binding LoginNavigationCommand}" 
-                            HorizontalAlignment="Center" Padding="10,5" Margin="0,0,0,10" Background="#333" Foreground="White" BorderBrush="#555"/>
-                </StackPanel>
-            </ScrollViewer>
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#161B22" Padding="15" BorderBrush="#30363D" BorderThickness="0,0,0,1">
+            <StackPanel>
+                <TextBlock Text="REGISTER" FontSize="22" FontWeight="Bold" Foreground="#58A6FF" FontFamily="Segoe UI"/>
+                <TextBlock Text="Create your account to place orders easily" Foreground="#8B949E" Margin="0,5,0,0" FontSize="13"/>
+            </StackPanel>
         </Border>
+
+        <!-- Form Card -->
+        <Grid Grid.Row="1">
+            <Border Width="500" Background="#161B22" BorderBrush="#30363D" BorderThickness="1" 
+                    Padding="30" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="500">
+                    <StackPanel>
+
+                        <TextBlock Text="First Name:" Margin="0,10,0,5" Foreground="#C9D1D9"/>
+                        <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" 
+                                 Padding="8" Background="#21262D" Foreground="White" BorderBrush="#30363D" BorderThickness="1"/>
+
+                        <TextBlock Text="Last Name:" Margin="0,10,0,5" Foreground="#C9D1D9"/>
+                        <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" 
+                                 Padding="8" Background="#21262D" Foreground="White" BorderBrush="#30363D" BorderThickness="1"/>
+
+                        <TextBlock Text="Email:" Margin="0,10,0,5" Foreground="#C9D1D9"/>
+                        <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" 
+                                 Padding="8" Background="#21262D" Foreground="White" BorderBrush="#30363D" BorderThickness="1"/>
+
+                        <TextBlock Text="Password:" Margin="0,10,0,5" Foreground="#C9D1D9"/>
+                        <PasswordBox x:Name="PasswordBox" Padding="8" Background="#21262D" Foreground="White"
+                                     BorderBrush="#30363D" BorderThickness="1"
+                                     PasswordChanged="PasswordBox_PasswordChanged"/>
+
+                        <TextBlock Text="Confirm Password:" Margin="0,10,0,5" Foreground="#C9D1D9"/>
+                        <PasswordBox x:Name="ConfirmPasswordBox" Padding="8" Background="#21262D" Foreground="White"
+                                     BorderBrush="#30363D" BorderThickness="1"
+                                     PasswordChanged="ConfirmPasswordBox_PasswordChanged"/>
+
+                        <TextBlock Text="Phone Number:" Margin="0,10,0,5" Foreground="#C9D1D9"/>
+                        <TextBox Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}" 
+                                 Padding="8" Background="#21262D" Foreground="White" BorderBrush="#30363D" BorderThickness="1"/>
+
+                        <TextBlock Text="Delivery Address:" Margin="0,10,0,5" Foreground="#C9D1D9"/>
+                        <TextBox Text="{Binding DeliveryAddress, UpdateSourceTrigger=PropertyChanged}" 
+                                 TextWrapping="Wrap" AcceptsReturn="True" Height="60" Padding="8"
+                                 Background="#21262D" Foreground="White" BorderBrush="#30363D" BorderThickness="1"/>
+
+                        <TextBlock Text="{Binding ErrorMessage}" Foreground="#F85149" Margin="0,10,0,0" 
+                                   Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
+
+                        <Button Content="REGISTER" Command="{Binding RegisterCommand}" Margin="0,20,0,0" Padding="10"
+                                FontWeight="SemiBold" Background="#238636" Foreground="White" BorderThickness="0"/>
+
+                        <TextBlock Text="Already have an account?" HorizontalAlignment="Center" Margin="0,20,0,5" Foreground="#8B949E"/>
+                        <Button Content="LOGIN" Command="{Binding LoginNavigationCommand}" 
+                                HorizontalAlignment="Center" Padding="8,5" Margin="0,0,0,10"
+                                Background="#21262D" Foreground="White" BorderBrush="#30363D" BorderThickness="1"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>
