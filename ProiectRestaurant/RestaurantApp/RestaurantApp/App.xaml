@@ -5,20 +5,31 @@
              xmlns:converters="clr-namespace:RestaurantApp.Converters"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
-        <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
-        <converters:ProductQuantityConverter x:Key="ProductQuantityConverter"/>
-        <converters:IntToVisibilityConverter x:Key="IntToVisibilityConverter"/>
-        <converters:StringToOrderStatusConverter x:Key="StringToOrderStatusConverter"/>
-        <converters:OrderItemTotalConverter x:Key="OrderItemTotalConverter"/>
-        <converters:OrderStatusToVisibilityConverter x:Key="OrderStatusToVisibilityConverter"/>
-        <converters:StockStatusConverter x:Key="StockStatusConverter"/>
-        <converters:PortionsLeftConverter x:Key="PortionsLeftConverter"/>
-        <converters:BoolToStringConverter x:Key="BoolToStringConverter"/>
-        <converters:OrderItemTotalMultiConverter x:Key="OrderItemTotalMultiConverter"/>
-        <converters:ZeroToVisibilityConverter x:Key="ZeroToVisibilityConverter"/>
-        <converters:NonZeroToVisibilityConverter x:Key="NonZeroToVisibilityConverter"/>
-        <converters:NonZeroDecimalToVisibilityConverter x:Key="NonZeroDecimalToVisibilityConverter"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Include temele -->
+                <ResourceDictionary Source="Themes/Colors.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Converters globali -->
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+            <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+            <converters:ProductQuantityConverter x:Key="ProductQuantityConverter"/>
+            <converters:IntToVisibilityConverter x:Key="IntToVisibilityConverter"/>
+            <converters:StringToOrderStatusConverter x:Key="StringToOrderStatusConverter"/>
+            <converters:OrderItemTotalConverter x:Key="OrderItemTotalConverter"/>
+            <converters:OrderStatusToVisibilityConverter x:Key="OrderStatusToVisibilityConverter"/>
+            <converters:StockStatusConverter x:Key="StockStatusConverter"/>
+            <converters:PortionsLeftConverter x:Key="PortionsLeftConverter"/>
+            <converters:BoolToStringConverter x:Key="BoolToStringConverter"/>
+            <converters:OrderItemTotalMultiConverter x:Key="OrderItemTotalMultiConverter"/>
+            <converters:ZeroToVisibilityConverter x:Key="ZeroToVisibilityConverter"/>
+            <converters:NonZeroToVisibilityConverter x:Key="NonZeroToVisibilityConverter"/>
+            <converters:NonZeroDecimalToVisibilityConverter x:Key="NonZeroDecimalToVisibilityConverter"/>
+        </ResourceDictionary>
     </Application.Resources>
+
 </Application>
+
+
